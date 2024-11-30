@@ -1,0 +1,125 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Дашборд</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: url("{% static 'images/photo_cloud.jpeg' %}") no-repeat center center fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            color: #2c3e50;
+            height: 100vh;
+        }
+
+        .tasks-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            width: 700px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .task-item {
+            background-color: #f9f9f9;
+            border: 1px solid #00796b;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            padding: 15px;
+        }
+
+        .task-title {
+            font-weight: bold;
+            color: #004d40;
+        }
+
+        .feedback {
+            font-style: italic;
+            color: #757575;
+            margin-top: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            border-radius: 30px;
+            font-size: 14px;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+        .btn-warning {
+            background-color: #ffc107;
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background-color: #e0a800;
+        }
+
+        .empty-tasks {
+            color: #d9534f;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="tasks-container">
+        <h2>Дашборд</h2>
+
+        {% if tasks %}
+            <ul class="task-list">
+                {% for task in tasks %}
+                    <li class="task-item">
+                        <p class="task-title">{{ task.title }}</p>
+                        <p>{{ task.description }}</p>
+
+                        <!-- Показване на обратната връзка от супер криейтора -->
+                        {% for feedback in task.feedbacks.all %}
+                            {% if feedback.creator == request.user and feedback.id == task.id %}
+                                <p class="feedback"><strong>Обратна връзка от супер криейтора:</strong> {{ feedback.message }}</p>
+                            {% endif %}
+                        {% empty %}
+                    <p class="feedback">Няма обратна връзка от супер криейтор към тази задача.</p>
+                    {% endfor %}
+
+                        <!-- Качване на изображение -->
+                        <form method="POST" enctype="multipart/form-data" class="form-group">
+                            {% csrf_token %}
+                            <input type="hidden" name="task_id" value="{{ task.id }}">
+                            <input type="file" name="upload_image" class="form-control">
+                            <button type="submit" class="btn btn-warning mt-2">Качи изображение</button>
+                        </form>
+
+                        <!-- Препращане към началната страница -->
+                        <a href="{% url 'home' %}" class="btn btn-primary mt-2">Начало</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="empty-tasks">Нямате задачи в момента.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,136 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Дашборд на Супер Създател</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: url("{% static 'images/photo_cloud.jpeg' %}") no-repeat center center fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            color: #2c3e50;
+        }
+
+        .container {
+            padding: 30px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.8); /* Лека покритие за четливост */
+            border-radius: 15px;
+            width: 80%;
+            margin: auto;
+            margin-top: 50px;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            color: #3b5998;
+        }
+
+        .task-table {
+            width: 100%;
+            margin-top: 30px;
+            border-collapse: collapse;
+        }
+
+        .task-table th, .task-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .task-table th {
+            background-color: #74b9ff;
+            color: white;
+        }
+
+        .task-table td {
+            background-color: #ecf0f1;
+        }
+
+        .task-form {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f0f4f7;
+            border-radius: 10px;
+            text-align: left;
+        }
+
+        .task-form select, .task-form button {
+            padding: 10px 20px;
+            margin-top: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .task-form button {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .task-form button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Дашборд на Супер Създател</h1>
+
+        <table class="task-table">
+            <tr>
+                <th>Заглавие</th>
+                <th>Описание</th>
+                <th>Създаденa от</th>
+                <th>Тип задача</th>
+                <th>Възложена на</th>
+                <th>Действия</th>
+            </tr>
+            {% for task in tasks %}
+            <tr>
+                <td>{{ task.title }}</td>
+                <td>{{ task.description }}</td>
+                <td>{{ task.created_by.username }}</td>
+                <td>{{ task.get_task_type_display }}</td>
+                <td>
+                    {% if task.assigned_to %}
+                        {{ task.assigned_to.username }}
+                    {% else %}
+                        {{ task.created_by.username }}
+                    {% endif %}
+                </td>
+                <td>
+                    <form method="post" action="{% url 'super_creator_dashboard' %}">
+                        {% csrf_token %}
+                        <textarea name="super_creator_feedback" placeholder="Напишете фидбек..." required></textarea>
+                        <input type="hidden" name="task_id" value="{{ task.id }}">
+                        <button type="submit">Изпратете фидбек</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <!-- Формата за възлагане на нови задачи (само избор на тип) -->
+        <div class="task-form">
+            <h2>Възложи нова задача</h2>
+            <form method="get" action="{% url 'create_task' %}">
+                <select name="task_type" required>
+                    <option value="creativity">Креативност</option>
+                    <option value="relaxation">Релаксация</option>
+                    <option value="physical">Физическа активност</option>
+                </select>
+                <button type="submit">Създайте задача</button>
+            </form>
+        </div>
+
+    </div>
+</body>
+</html>

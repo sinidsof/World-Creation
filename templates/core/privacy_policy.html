@@ -1,0 +1,105 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Политика за конфиденциалност</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background-color: #00796b;
+        }
+        .navbar a {
+            color: white;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #00796b;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #333;
+        }
+        .important {
+            color: #00796b;
+            font-weight: bold;
+        }
+        .footer-link {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .footer-link a {
+            color: #00796b;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Навигация -->
+<nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container">
+        <a class="navbar-brand" href="#">World Creation</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home' %}">Начало</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'about' %}">За нас</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'privacy_policy' %}">Политика за конфиденциалност</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Основно съдържание -->
+<div class="container">
+    <h1>Политика за конфиденциалност</h1>
+
+    <p><strong>Нашата отговорност към теб</strong></p>
+    <p>В "World Creation" ние се ангажираме с твоята конфиденциалност и защитата на личните данни, които споделяш с нас. Нашата цел е да те информираме за това как събираме, използваме и съхраняваме твоите данни.</p>
+
+    <p>Ние вярваме, че всеки човек трябва да бъде отговорен за своите действия, не само по отношение на закона, но и по отношение на етиката и морала. Използването на лични данни не е само правен въпрос – това е въпрос на доверие и човечност. Когато споделяш лична информация с нас, ние съзнаваме отговорността, която носим към теб и към обществото.</p>
+
+    <p class="important">Внимание: Когато използваш нашето приложение, ти също носиш отговорност за това как боравиш с личните данни на другите хора. Ние призоваваме всеки потребител да бъде честен, уважителен и отговорен в своето поведение.</p>
+
+    <h3>Какви данни събираме?</h3>
+    <p>Ние събираме лични данни, които ни предоставяш при регистрация и използване на нашето приложение, като имена, имейл адреси и други доброволно предоставени данни.</p>
+
+    <h3>Как използваме твоите данни?</h3>
+    <p>Твоите данни се използват само за целите на предоставяне на услугите в приложението, като поддръжка на потребителските акаунти, изпращане на известия и предоставяне на персонализирано съдържание.</p>
+
+    <h3>Как ги защитаваме?</h3>
+    <p>Ние използваме най-съвременни технологии и методи за сигурност, за да защитим твоите лични данни от неразрешен достъп или злоупотреба. Въпреки това, както всяка технология, и тази има своите ограничения.</p>
+
+    <h3>Какво трябва да запомниш?</h3>
+    <p>Ние се стремим към максимална прозрачност относно нашите практики за конфиденциалност. Важно е да знаеш, че твоите действия онлайн трябва да бъдат в съответствие със съществуващите закони и морални норми. Доверие и уважение са основни принципи, които трябва да се спазват от всички в интернет средата.</p>
+
+    <div class="footer-link">
+        <p>За повече информация, можеш да се свържеш с нас по всяко време. <a href="mailto:contact@worldcreation.com">Свържи се с нас</a></p>
+    </div>
+</div>
+
+</body>
+</html>

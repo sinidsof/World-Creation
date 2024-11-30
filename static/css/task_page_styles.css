@@ -1,0 +1,65 @@
+/* Общи стилове за страницата */
+body {
+    margin: 0;
+    padding: 0;
+    background: url("/static/images/photo_cloud.jpeg") no-repeat center center fixed;
+    background-size: cover;
+    font-family: Arial, sans-serif;
+    color: #2c3e50;
+}
+
+.navbar {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.navbar-brand, .nav-link {
+    color: white !important;
+}
+
+/* Основен контейнер */
+.container {
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 15px;
+    margin-top: 50px;
+}
+
+h1 {
+    font-size: 2.5em;
+    color: #3b5998;
+}
+
+/* Панели за самооценка, постижения и обратна връзка */
+.panel {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.left-panel, .center-panel, .right-panel {
+    margin-top: 20px;
+}
+
+.left-panel {
+    background-color: #f1f1f1;
+}
+
+.center-panel {
+    background-color: #f9f9f9;
+}
+
+.right-panel {
+    background-color: #e9ecef;
+}
+
+/* Допълнителни стилове за линковете и бутоните */
+.footer-link a {
+    color: #00796b;
+    text-decoration: none;
+}
+
+.footer-link a:hover {
+    text-decoration: underline;
+}
