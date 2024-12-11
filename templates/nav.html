@@ -1,0 +1,71 @@
+
+<!-- Навигационно меню -->
+       
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="{% url 'home' %}">WorldCreation</a>
+      
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+
+                <li class="nav-item">
+                    {% if  request.path != '/accounts/login/' %}
+                                <a class="nav-link" href="{% url 'login' %}">Вход</a>
+                    {% endif %}>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'about' %}">За нас</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'privacy_policy' %}">Политика за конфиденциалност</a>
+                </li>
+                
+            </ul>
+        </div>
+    </nav>
+
+
+{#<!-- Навигационна лента -->#}
+{#    <nav class="navbar navbar-expand-lg navbar-dark">#}
+{#        <a class="navbar-brand" href="{% url 'home' %}">WorldCreation</a>#}
+{#        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">#}
+{#            <span class="navbar-toggler-icon"></span>#}
+{#        </button>#}
+{#        <div class="collapse navbar-collapse" id="navbarNav">#}
+{#            <ul class="navbar-nav ml-auto">#}
+{#                {% if user.is_authenticated %}#}
+{#                    <!-- Линкове за логнат потребител -->#}
+{#                     <li class="nav-item">#}
+{#                        <a class="nav-link" href="{% url 'creator_dashboard'  %}">Дашборд и постижения</a>#}
+{#                    </li>#}
+{#                    <li class="nav-item">#}
+{#                        <a class="nav-link" href="{% url 'profile' %}">Профил</a>#}
+{#                    </li>#}
+{#                    <li class="nav-item">#}
+{#                        <a class="nav-link" href="{% url 'logout' %}">Изход</a>#}
+{#                    </li>#}
+{#                   #}
+{#                {% else %}#}
+{#                    <!-- Линкове за незалогнат потребител -->#}
+{#                    #}
+{#                    <li class="nav-item" >#}
+{#                            {% if  request.path != '/accounts/login/' %}#}
+{#                                <a class="nav-link" href="{% url 'login' %}">Вход</a>#}
+{#                            {% endif %}>#}
+{#                    </li>#}
+{#                    <li class="nav-item">#}
+{#                        <a class="nav-link" href="{% url 'register' %}">Регистрация</a>#}
+{#                    </li>#}
+{#                    <li class="nav-item">#}
+{#                    <a class="nav-link" href="{% url 'about' %}">За нас</a>#}
+{#                </li>#}
+{#                <li class="nav-item">#}
+{#                    <a class="nav-link" href="{% url 'privacy_policy' %}">Политика за конфиденциалност</a>#}
+{#                </li>#}
+{#                {% endif %}#}
+{#                #}
+{#            </ul>#}
+{#        </div>#}
+{#    </nav>#}

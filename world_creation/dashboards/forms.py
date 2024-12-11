@@ -1,5 +1,6 @@
 from django import forms
-from .models import Feedback, SelfAssessment
+from .models import Feedback
+from .models import Task
 
 
 class FeedbackForm(forms.ModelForm):
@@ -13,13 +14,20 @@ class FeedbackForm(forms.ModelForm):
             }),
         }
 
-class SelfAssessmentForm(forms.ModelForm):
+
+class TaskImageUploadForm(forms.ModelForm):
     class Meta:
-        model = SelfAssessment
-        fields = ['rating', 'comments']
+        model = Task
+        fields = ['image']
         widgets = {
-            'comments': forms.Textarea(attrs={
-                'rows': 4,
-                'placeholder': 'Напишете вашето мнение за задачата...'
-            }),
+            'image': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
+
+class ShareAchievementForm(forms.Form):
+    task_id = forms.IntegerField(widget=forms.HiddenInput())
+
+class TaskImageUploadForm(forms.ModelForm):
+    class Meta:
+        model = Task
+        fields = ['image']  # Само изображението
+

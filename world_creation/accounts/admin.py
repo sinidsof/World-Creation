@@ -1,10 +1,9 @@
-from django.contrib import admin
 
-# Register your models here.
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
 from world_creation.accounts.models import CustomUser
+
 
 
 class CustomUserAdmin(UserAdmin):

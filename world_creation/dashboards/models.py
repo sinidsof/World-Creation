@@ -21,12 +21,3 @@ class Feedback(models.Model):
         return f"Feedback for {self.task.title} by {self.creator.username}"
 
 
-class SelfAssessment(models.Model):
-    task = models.ForeignKey(Task, related_name="self_assessments", on_delete=models.CASCADE)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    rating = models.PositiveIntegerField(choices=[(i, str(i)) for i in range(1, 6)])
-    comments = models.TextField(blank=True, null=True)
-    date = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"Self-assessment for {self.task.title} by {self.user.username}"

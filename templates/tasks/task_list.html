@@ -6,169 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Моите задачи</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background: url("{% static 'images/photo_cloud.jpeg' %}") no-repeat center center fixed;
-            background-size: cover;
-            font-family: Arial, sans-serif;
-            color: #2c3e50;
-            height: 100vh;
-        }
-
-        .navbar {
-            background-color: rgba(0, 0, 0, 0.7);
-        }
-
-        .navbar-brand, .nav-link {
-            color: white !important;
-        }
-
-        .navbar-brand:hover, .nav-link:hover {
-            color: #80deea !important;
-        }
-
-        /* Контейнер за задачите */
-        .tasks-container {
-            background-color: rgba(255, 255, 255, 0.9);
-            border-radius: 15px;
-            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
-            padding: 30px;
-            width: 700px; /* Увеличена ширина на контейнера */
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        .tasks-container h2 {
-            color: #00796b; /* Син цвят за заглавието */
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-
-        .task-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .task-item {
-            background-color: #f9f9f9;
-            border: 1px solid #00796b;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .task-title {
-            font-weight: bold;
-            color: #004d40;
-            margin-bottom: 5px;
-        }
-
-        .task-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .btn {
-            border-radius: 30px;
-            font-size: 14px;
-            padding: 5px 10px;
-        }
-
-        .btn-warning {
-            background-color: #ff9800;
-            color: white;
-        }
-
-        .btn-danger {
-            background-color: #f44336;
-            color: white;
-        }
-
-        .btn-info {
-            background-color: #2196f3;
-            color: white;
-        }
-
-        .btn:hover {
-            opacity: 0.8;
-        }
-
-        .empty-tasks {
-            text-align: center;
-            color: #b0bec5;
-            font-style: italic;
-        }
-
-        .create-task-btn {
-            background-color: #00796b;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 30px;
-            font-size: 16px;
-            text-decoration: none;
-            display: block;
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .create-task-btn:hover {
-            background-color: #004d40;
-        }
-    </style>
+      <link rel="stylesheet" href="{% static 'css/task_list.css' %}">
 </head>
 <body>
-    <!-- Навигационна лента -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <a class="navbar-brand" href="{% url 'home' %}">WorldCreation</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
-                {% if user.is_authenticated %}
-                    <!-- Линкове за логнат потребител -->
-                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'creator_dashboard'  %}">Дашборд и постижения</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'profile' %}">Профил</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'logout' %}">Изход</a>
-                    </li>
-                   
-                {% else %}
-                    <!-- Линкове за незалогнат потребител -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'login' %}">Вход</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'register' %}">Регистрация</a>
-                    </li>
-                    <li class="nav-item">
-                    <a class="nav-link" href="{% url 'about' %}">За нас</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'privacy_policy' %}">Политика за конфиденциалност</a>
-                </li>
-                {% endif %}
-                
-            </ul>
-        </div>
-    </nav>
 
-    <!-- Контейнер за задачите -->
+    {% include 'nav_dashboards.html' %}
     <div class="tasks-container">
         <h2>Моите задачи</h2>
 
@@ -181,31 +23,30 @@
             </div>
         {% endif %}
 
-        <!-- Показване на задачите -->
-        {% if tasks %}
-            <ul class="task-list">
-                {% for task in tasks %}
-                    <li class="task-item">
-                        <div>
-                            <p class="task-title">{{ task.title }}</p>
-                            <p>{{ task.description }}</p>
-                        </div>
-                        <div class="task-actions">
-                            <a href="{% url 'edit_task' task.id %}" class="btn btn-info">Редактиране</a>
-                            <a href="{% url 'delete_task' task.id %}" class="btn btn-danger">Изтриване</a>
-                        </div>
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p class="empty-tasks">Нямате задачи все още.</p>
-        {% endif %}
+        <ul class="task-list">
+            {% for task in tasks %}
+                <li class="task-item">
+                    <div>
+                        <div class="task-title">{{ task.title }}</div>
+                        <p>{{ task.description }}</p>
+                        <p><strong>Тип:</strong> {{ task.get_task_type_display }}</p>
+                        <p><strong>Време:</strong> {{ task.estimated_time }} минути</p>
+                    </div>
+
+                    <!-- Действия (Редактиране, Изтриване, Самооценка) -->
+                    <div class="task-actions">
+                        <a href="{% url 'edit_task' task.id %}" class="btn btn-warning">Редактирай</a>
+                        <a href="{% url 'delete_task' task.id %}" class="btn btn-danger">Изтрий</a>
+                        <a href="{% url 'self_assessment' task.id %}" class="btn btn-info">Самооценка</a>
+                    </div>
+                </li>
+            {% empty %}
+                <li class="empty-tasks">Нямате задачи в момента.</li>
+            {% endfor %}
+        </ul>
 
         <!-- Бутон за създаване на нова задача -->
-        <a href="{% url 'create_task' %}" class="create-task-btn">Добави нова задача</a>
+        <a href="{% url 'create_task' %}" class="create-task-btn">Създай нова задача</a>
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

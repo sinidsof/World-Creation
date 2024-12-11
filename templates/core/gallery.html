@@ -1,11 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>GALERY</title>,
-    <h1>galery</h1>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block title %}Галерия на творците{% endblock %}
+{% block content %}
 
-</body>
-</html>
+    <!-- Основно съдържание -->
+    <div class="container">
+        <h1>Галерия на творците</h1>
+
+        {% if tasks_with_images %}
+            <div class="row">
+                {% for task_item in tasks_with_images %}
+                    <div class="task-item">
+                        {% if task_item.image %}
+                            <img src="{{ task_item.image.url }}" alt="{{ task_item.title }}">
+                            <h4>{{ task_item.title }}</h4>
+                            <p>{{ task_item.description }}</p>
+                            <a href="{{ task_item.image.url }}" class="btn btn-primary" target="_blank">Преглед на изображението</a>
+                        {% else %}
+                            <p>Тази задача няма изображение.</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>Няма изображения в галерията към момента.</p>
+        {% endif %}
+
+        <!-- Линк към дашборда -->
+        <div class="footer-link">
+            {% if request.GET.next %}
+                <a href="{{ request.GET.next }}">Върни се към дашборда</a>
+            {% endif %}
+                    
+        </div>
+    </div>
+
+{% endblock %}

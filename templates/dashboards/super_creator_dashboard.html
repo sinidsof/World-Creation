@@ -26,6 +26,8 @@
             margin-top: 50px;
         }
 
+   
+        
         h1 {
             font-size: 3em;
             margin-bottom: 20px;
@@ -78,9 +80,39 @@
         .task-form button:hover {
             background-color: #45a049;
         }
+
+        .feedback-form {
+            margin-top: 20px;
+            text-align: left;
+            width: 100%;
+        }
+
+        .feedback-form textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            resize: vertical;
+        }
+
+        .feedback-form button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .feedback-form button:hover {
+            background-color: #2980b9;
+        }
     </style>
 </head>
 <body>
+
     <div class="container">
         <h1>Дашборд на Супер Създател</h1>
 
@@ -107,12 +139,16 @@
                     {% endif %}
                 </td>
                 <td>
-                    <form method="post" action="{% url 'super_creator_dashboard' %}">
-                        {% csrf_token %}
-                        <textarea name="super_creator_feedback" placeholder="Напишете фидбек..." required></textarea>
-                        <input type="hidden" name="task_id" value="{{ task.id }}">
-                        <button type="submit">Изпратете фидбек</button>
-                    </form>
+                    
+                    <!-- Форма за фийдбек -->
+                    <div class="feedback-form">
+                        <form method="post" action="{% url 'super_creator_dashboard' %}">
+                            {% csrf_token %}
+                            <textarea name="super_creator_feedback" placeholder="Напишете фидбек..." required></textarea>
+                            <input type="hidden" name="task_id" value="{{ task.id }}">
+                            <button type="submit">Изпратете фидбек</button>
+                        </form>
+                    </div>
                 </td>
             </tr>
             {% endfor %}
@@ -130,6 +166,26 @@
                 <button type="submit">Създайте задача</button>
             </form>
         </div>
+    
+    
+{#    <div class="group-management">#}
+{#    <h2>Управление на групи</h2>#}
+{#    <form method="post" action="{% url 'manage_groups' %}">#}
+{#        {% csrf_token %}#}
+{#        <select name="group" required>#}
+{#            {% for group in groups %}#}
+{#                <option value="{{ group.id }}">{{ group.name }}</option>#}
+{#            {% endfor %}#}
+{#        </select>#}
+{#        <select name="user" required>#}
+{#            {% for user in users %}#}
+{#                <option value="{{ user.id }}">{{ user.username }}</option>#}
+{#            {% endfor %}#}
+{#        </select>#}
+{#        <button type="submit">Добави в група</button>#}
+{#    </form>#}
+{#</div>#}
+
 
     </div>
 </body>

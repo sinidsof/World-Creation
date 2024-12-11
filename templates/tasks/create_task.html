@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="bg">
 <head>
@@ -7,38 +8,72 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
     <style>
         body {
-            background: linear-gradient(to right, #e0f7fa, #b2ebf2);
+            margin: 0;
+            padding: 0;
+            background: url("{% static 'images/photo_cloud.jpeg' %}") no-repeat center center fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            color: #2c3e50;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            margin: 0;
+            flex-direction: column;
         }
+
+        /* Навигационен бар */
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.7);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000; /* Това ще гарантира, че навигацията е винаги на върха */
+        }
+
+        .navbar-brand, .nav-link {
+            color: white !important;
+        }
+
+        .navbar-brand:hover, .nav-link:hover {
+            color: #80deea !important;
+        }
+
+        /* Контейнер за формата */
         .form-container {
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
-            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 30px;
             width: 100%;
             max-width: 400px;
             max-height: 85vh;
             overflow-y: auto;
-        }
-        .form-container h2 {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             text-align: center;
+            z-index: 10; /* Това ще постави формата под навигацията */
+        }
+
+        .form-container h2 {
             color: #00796b;
             margin-bottom: 15px;
         }
+
         .form-container p.subtitle {
             font-size: 14px;
             color: #555;
             margin-bottom: 25px;
         }
+
         .form-control {
             border-radius: 30px;
             margin-bottom: 10px;
             border: 1px solid #00796b;
         }
+
         .btn-primary {
             width: 100%;
             padding: 10px;
@@ -47,19 +82,25 @@
             background-color: #00796b;
             border: none;
         }
+
         .btn-primary:hover {
             background-color: #004d40;
         }
+
         .footer-link {
+            text-align: center;
             margin-top: 20px;
         }
+
         .footer-link a {
             text-align: center;
             margin-top: 10px;
         }
+
         .footer-link a:hover {
             text-decoration: underline;
         }
+
         .error-messages {
             color: #d32f2f;
             font-size: 14px;
@@ -68,7 +109,35 @@
     </style>
 </head>
 <body>
+    <!-- Навигационна лента -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="{% url 'home' %}">WorldCreation</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                {% if request.user.role == 'super_creator' %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'super_creator_dashboard'  %}">Дашборд и постижения</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'creator_dashboard'  %}">Дашборд и постижения</a>
+                    </li>
+                {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'profile' %}">Профил</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'logout' %}">Изход</a>
+                    </li>
+         
+            </ul>
+        </div>
+    </nav>
 
+    <!-- Форма за създаване на задача -->
     <div class="form-container">
         <h2>Създаване на задача</h2>
 
@@ -81,7 +150,6 @@
             </div>
         {% endif %}
 
-        <!-- Формата за създаване на задача -->
         <form method="POST">
             {% csrf_token %}
             
@@ -165,11 +233,12 @@
             <!-- Бутон за създаване на задачата -->
             <button type="submit" class="btn btn-primary">Създайте задача</button>
         </form>
-
-        <div class="footer-link">
-            <p><a href="{% url 'task_list' %}">Вижте всички задачи</a></p>
-        </div>
+        {% if request.user.role == 'co_creator' %}
+            <div class="footer-link">
+                <p><a href="{% url 'task_list' %}">Вижте всички задачи</a></p>
+            </div>
+    {% endif %}
     </div>
 
-</body>
-</html>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap

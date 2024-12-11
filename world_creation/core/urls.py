@@ -1,12 +1,8 @@
-
 from django.urls import path
-
 from world_creation.core import views
-from django.conf import settings
-from django.conf.urls.static import static
+
 
 urlpatterns = [
-
 
 # Основни страници
     path('', views.home, name='home'),

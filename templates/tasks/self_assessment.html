@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Самооценка на задача</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/self-assessment.css' %}">
+
+</head>
+<body>
+
+    <div class="form-container">
+        <h2>Самооценка за задача: {{ task.title }}</h2>
+
+        <!-- Информация за задачата -->
+        <div class="task-details">
+            <p><strong>Описание:</strong> {{ task.description }}</p>
+            <p><strong>Тип:</strong> {{ task.get_task_type_display }}</p>
+            <p><strong>Време:</strong> {{ task.estimated_time }} минути</p>
+        </div>
+
+        <!-- Формата за самооценка -->
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <!-- Бутон за записване на самооценката -->
+            <button type="submit" class="btn btn-success">Запиши самооценка</button>
+        </form>
+
+        <div class="footer-link">
+            <p><a href="{% url 'task_list' %}">Вижте всички задачи</a></p>
+        </div>
+    </div>
+
+</body>
+</html>

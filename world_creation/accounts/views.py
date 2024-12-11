@@ -1,64 +1,100 @@
 from django.contrib.auth.forms import UserChangeForm
-from django.contrib.auth import authenticate, login
-from django.contrib import messages
-from .forms import CustomLoginForm, CustomUserCreationForm
-from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login, get_user_model, logout
+from django.shortcuts import redirect, render
+from .forms import CustomLoginForm, CustomUserCreationForm, CustomUserProfileForm
 from django.contrib.auth.decorators import login_required
-
-def login_view(request):
-    if request.method == 'POST':
-        form = CustomLoginForm(request, data=request.POST)
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                login(request, user)
-                messages.success(request, f'Добре дошли, {user.username}!')
-                if user.role == 'super_creator':
-                    return redirect('super_creator_dashboard')
-                else:
-                    return redirect('task_list')
-            else:
-                messages.error(request, "Невалидни данни за вход. Моля, опитайте отново.")
-                return redirect('login')
-    else:
-        form = CustomLoginForm()
-    return render(request, 'accounts/login.html', {'form': form})
+from django.views.generic.edit import FormView
+from django.contrib import messages
+from django.urls import reverse_lazy
 
 
-def register_view(request):
-    if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            messages.success(request, 'Успешно се регистрирахте! Можете да се логнете сега.')
-            return redirect('login')
+
+UserModel = get_user_model()
+class RegisterView(FormView):
+    model = UserModel
+    form_class = CustomUserCreationForm
+    template_name = 'accounts/register.html'
+    success_url = reverse_lazy('login')
+
+    def form_valid(self, form):
+        user = form.save()
+        if user.role == 'super_creator':
+            user.is_superuser = True
+            user.is_staff = True
+        user.save()
+
+        messages.success(self.request, 'Успешно се регистрирахте! Можете да се логнете сега.')
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        return super().form_invalid(form)
+
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        # Персонализирана логика, ако е необходима
+        if commit:
+            user.save()
+        return user
+
+
+
+class LoginView(FormView):
+    template_name = 'accounts/login.html'
+    form_class = CustomLoginForm
+    success_url = reverse_lazy('task_list')  # По подразбиране, ако няма роля
+
+    def form_valid(self, form):
+        username = form.cleaned_data.get('username')
+        password = form.cleaned_data.get('password')
+        user = authenticate(self.request, username=username, password=password)
+
+        if user is not None:
+            login(self.request, user)
+            messages.success(self.request, f'Добре дошли, {user.username}!')
+
+            # Пренасочване според ролята
+            if user.role == 'super_creator':
+                return redirect('super_creator_dashboard')
+            return super().form_valid(form)
         else:
-            messages.error(request, 'Моля, коригирайте грешките в формата.')
-    else:
-        form = CustomUserCreationForm()
-    return render(request, 'accounts/register.html', {'form': form})
+            messages.error(self.request, "Невалидни данни за вход. Моля, опитайте отново.")
+            return redirect('login')
+
+    def form_invalid(self, form):
+        messages.error(self.request, "Моля, попълнете коректно формата.")
+        return super().form_invalid(form)
+
+
+
+def custom_logout(request):
+    logout(request)  # Изход от системата
+    return redirect('login')
 
 
 @login_required
 def profile(request):
-    return render(request, 'accounts/profile.html', {'user': request.user})
+    # Вземаме профила на текущия потребител (ако съществува)
+    profile = request.user.profile  # връзка 1:1 между CustomUser и Profile
+    return render(request, 'accounts/profile.html', {'user': request.user, 'profile': profile})
 
-"""Тази функция използва декоратора @login_required, което означава, 
-че потребителят трябва да бъде влязъл, за да има достъп до страницата. 
-Параметърът request.user съдържа информация за текущия логнат потребител, 
-която ще предадем на шаблона."""
 
 @login_required
 def edit_profile(request):
-    if request.method == 'POST':
-        form = UserChangeForm(request.POST, instance=request.user)
-        if form.is_valid():
-            form.save()
-            return redirect('profile')
+    # Формата се променя в зависимост от ролята на потребителя
+    if request.user.role == 'super_creator':
+        form = UserChangeForm(request.POST or None, instance=request.user)
     else:
-        form = UserChangeForm(instance=request.user)
+        form = CustomUserProfileForm(request.POST or None, instance=request.user)
+
+    # Ако формата е валидна, записваме промените
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        return redirect('profile')  # Пренасочваме към профила на потребителя
+
     return render(request, 'accounts/edit_profile.html', {'form': form})
+
+
+
 
 

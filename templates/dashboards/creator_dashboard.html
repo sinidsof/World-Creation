@@ -1,10 +1,12 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Дашборд</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
     <style>
         body {
@@ -82,40 +84,82 @@
             color: #d9534f;
             font-size: 18px;
         }
+
+        .shared-text {
+            font-size: 16px;
+            font-weight: bold;
+            color: #28a745;
+        }
     </style>
 </head>
 <body>
+ {% include 'nav_dashboards.html' %}
     <div class="tasks-container">
         <h2>Дашборд</h2>
 
         {% if tasks %}
             <ul class="task-list">
                 {% for task in tasks %}
-                    <li class="task-item">
-                        <p class="task-title">{{ task.title }}</p>
-                        <p>{{ task.description }}</p>
+    <div class="task-item">
+        <h4>{{ task.title }}</h4>
+        <p>{{ task.description }}</p>
 
-                        <!-- Показване на обратната връзка от супер криейтора -->
-                        {% for feedback in task.feedbacks.all %}
-                            {% if feedback.creator == request.user and feedback.id == task.id %}
-                                <p class="feedback"><strong>Обратна връзка от супер криейтора:</strong> {{ feedback.message }}</p>
-                            {% endif %}
-                        {% empty %}
-                    <p class="feedback">Няма обратна връзка от супер криейтор към тази задача.</p>
-                    {% endfor %}
+       <!-- Показване на обратната връзка от криейтора -->
+<div class="feedback-section mt-3">
+    {% if task.feedbacks.all %}
+        <strong>Обратна връзка от криейтора:</strong>
+        {% for feedback in task.feedbacks.all %}
+            <p class="feedback">{{ feedback.message }}</p>
+        {% endfor %}
+    {% else %}
+        <p class="feedback">Все още няма обратна връзка от криейтора за тази задача.</p>
+    {% endif %}
+</div>
 
-                        <!-- Качване на изображение -->
-                        <form method="POST" enctype="multipart/form-data" class="form-group">
-                            {% csrf_token %}
-                            <input type="hidden" name="task_id" value="{{ task.id }}">
-                            <input type="file" name="upload_image" class="form-control">
-                            <button type="submit" class="btn btn-warning mt-2">Качи изображение</button>
-                        </form>
+     <div class="self-assessment-section">
+    {% if task.self_assessments.exists %}
+        {% for assessment in task.self_assessments.all %}
+            <p>Самооценка от {{ assessment.user.username }}: {{ assessment.rating }} звезди</p>
+            {% if assessment.comments %}
+                <p>Коментар: {{ assessment.comments }}</p>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <p class="feedback">Не сте оценявали тази задача.</p>
+    {% endif %}
+</div>
 
-                        <!-- Препращане към началната страница -->
-                        <a href="{% url 'home' %}" class="btn btn-primary mt-2">Начало</a>
-                    </li>
-                {% endfor %}
+        <!-- Ако задачата е споделена, показваме текст, иначе бутон за споделяне -->
+        {% if task.shared %}
+            <p class="shared-text">Постижението за задачата "{{ task.title }}" беше успешно споделено! Не забравяй, че всички ние сме част от едно равноправно творческо пътуване.</p>
+        {% else %}
+            <form method="POST" class="mt-2">
+                {% csrf_token %}
+                <input type="hidden" name="task_id" value="{{ task.id }}">
+                <input type="hidden" name="next" value="{% url 'creator_dashboard' %}">
+                <input type="hidden" name="share_achievement" value="true">
+                <button type="submit" class="btn btn-success">Сподели постижение</button>
+            </form>
+        {% endif %}
+
+        <!-- Показване на качено изображение -->
+        {% if task.image %}
+            <div class="alert alert-info mt-2">
+                <strong>Качено изображение:</strong> 
+                <a href="{{ task.image.url }}" target="_blank">{{ task.image.name }}</a>
+            </div>
+        {% else %}
+            <!-- Качване на изображение -->
+            <form method="POST" enctype="multipart/form-data" class="form-group mt-2">
+                {% csrf_token %}
+                <input type="hidden" name="task_id" value="{{ task.id }}">
+                <input type="file" name="image" class="form-control" required>
+                <button type="submit" class="btn btn-warning mt-2">Качи изображение</button>
+            </form>
+        {% endif %}
+
+    </div>
+{% endfor %}
             </ul>
         {% else %}
             <p class="empty-tasks">Нямате задачи в момента.</p>

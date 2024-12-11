@@ -73,71 +73,29 @@
     <div class="register-container">
         <h2>Създайте акаунт</h2>
 
-<form method="POST">
-    {% csrf_token %}
+<form method="post">
+  {% csrf_token %}
 
-    <!-- Потребителско име -->
-    <div class="form-group">
-        <label for="id_username">Потребителско име</label>
-        {{ form.username }}
-        {% if form.username.errors %}
-            <div class="error-messages">
-                <ul>
-                    {% for error in form.username.errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
-                </ul>
-            </div>
-        {% endif %}
+  {{ form.username }}
+  {{ form.role }}
+  {{ form.password1 }}
+  {{ form.password2 }}
+
+  {% if form.errors %}
+    <div class="error-messages">
+        <ul>
+            {% for field, errors in form.errors.items %}
+                {% for error in errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
     </div>
+  {% endif %}
 
-    <!-- Роля -->
-    <div class="form-group">
-        <label for="id_role">Роля</label>
-        {{ form.role }}
-        {% if form.role.errors %}
-            <div class="error-messages">
-                <ul>
-                    {% for error in form.role.errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
-                </ul>
-            </div>
-        {% endif %}
-    </div>
-
-    <!-- Парола -->
-    <div class="form-group">
-        <label for="id_password1">Парола</label>
-        {{ form.password1 }}
-        {% if form.password1.errors %}
-            <div class="error-messages">
-                <ul>
-                    {% for error in form.password1.errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
-                </ul>
-            </div>
-        {% endif %}
-    </div>
-
-    <!-- Повторете паролата -->
-    <div class="form-group">
-        <label for="id_password2">Повторете паролата</label>
-        {{ form.password2 }}
-        {% if form.password2.errors %}
-            <div class="error-messages">
-                <ul>
-                    {% for error in form.password2.errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
-                </ul>
-            </div>
-        {% endif %}
-    </div>
-
-    <button type="submit" class="btn btn-primary">Регистрация</button>
+  <button type="submit" class="btn btn-primary">Регистрация</button>
 </form>
+
 
 
         <div class="footer-link">

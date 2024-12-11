@@ -1,0 +1,28 @@
+ <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="{% url 'home' %}">WorldCreation</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+
+                    <!-- Линкове за логнат потребител -->
+                     <li class="nav-item">
+                        {% if  request.path == '/tasks/' %}
+                                <a class="nav-link" href="{% url 'creator_dashboard'  %}">Дашборд и постижения</a>
+                        {% else %}
+                            <a class="nav-link" href="{% url 'task_list'  %}">Списък със задачи</a>
+                    {% endif %}>
+                      
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'profile' %}">Профил</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'logout' %}">Изход</a>
+                    </li>
+                   
+            
+                
+            </ul>
+        </div>
+    </nav>

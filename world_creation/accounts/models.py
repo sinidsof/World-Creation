@@ -24,11 +24,13 @@ class CustomUserManager(BaseUserManager):
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     ROLE_CHOICES = (
-        ('super_creator', 'Super Creator'),
         ('co_creator', 'Co-Creator'),
+        ('super_creator', 'Super Creator'),
+
     )
 
     username = models.CharField(max_length=150, unique=True)
+    email = models.EmailField(unique=True, blank=True, null=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     role = models.CharField(
@@ -44,6 +46,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = []  # Ако искаме допълнителни задължителни полета, ги добавяме тук.
 
+    def get_full_name(self):
+        return f"{self.profile.first_name} {self.profile.last_name}"
     def __str__(self):
         return self.username
 
@@ -54,6 +58,8 @@ class Profile(models.Model):
     last_name = models.CharField(max_length=30, blank=True)
     date_of_birth = models.DateField(null=True, blank=True)
     profile_picture = models.URLField(blank=True)
+
+
 
     def __str__(self):
         return f"Profile на {self.user.username}"

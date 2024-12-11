@@ -1,9 +1,6 @@
 from django.core.exceptions import ValidationError
 from django.db import models
-from world_creation import settings
-
-
-# Create your models here.
+from django.conf import settings
 
 class Task(models.Model):
     TASK_TYPES = (
@@ -31,11 +28,24 @@ class Task(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
 
+
+    image = models.ImageField(upload_to='task_images/', null=True, blank=True) # Поле за изображение
+    shared = models.BooleanField(default=False)  # Поле за показване дали постижението е споделено
+
     def clean(self):
-        if self.estimated_time <= 0:
+        if self.estimated_time is not None and self.estimated_time <= 0:
             raise ValidationError('Времето за изпълнение на задачата трябва да бъде положително число.')
 
     def __str__(self):
         return f"{self.title} ({self.get_task_type_display()})"
 
 
+class SelfAssessment(models.Model):
+    task = models.ForeignKey(Task, related_name="self_assessments", on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    rating = models.PositiveIntegerField(choices=[(i, str(i)) for i in range(1, 6)])
+    comments = models.TextField(blank=True, null=True)
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Self-assessment for {self.task.title} by {self.user.username}"

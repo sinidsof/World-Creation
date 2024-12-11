@@ -1,0 +1,5 @@
+# Игнориране на медийната папка
+world_creation/media/
+sharing
+.env
+

@@ -1,0 +1,118 @@
+ body {
+            margin: 0;
+            padding: 0;
+            background: url("/static/images/photo_cloud.jpeg") no-repeat center center fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            color: #2c3e50;
+            height: 100vh;
+        }
+
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .navbar-brand, .nav-link {
+            color: white !important;
+        }
+
+        .navbar-brand:hover, .nav-link:hover {
+            color: #80deea !important;
+        }
+
+        /* Контейнер за задачите */
+        .tasks-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            width: 700px; /* Увеличена ширина на контейнера */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .tasks-container h2 {
+            color: #00796b; /* Син цвят за заглавието */
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .task-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .task-item {
+            background-color: #f9f9f9;
+            border: 1px solid #00796b;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .task-title {
+            font-weight: bold;
+            color: #004d40;
+            margin-bottom: 5px;
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            border-radius: 30px;
+            font-size: 14px;
+            padding: 5px 10px;
+        }
+
+        .btn-warning {
+            background-color: #ff9800;
+            color: white;
+        }
+
+        .btn-danger {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .btn-info {
+            background-color: #2196f3;
+            color: white;
+        }
+
+        .btn:hover {
+            opacity: 0.8;
+        }
+
+        .empty-tasks {
+            text-align: center;
+            color: #b0bec5;
+            font-style: italic;
+        }
+
+        .create-task-btn {
+            background-color: #00796b;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 16px;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .create-task-btn:hover {
+            background-color: #004d40;
+        }

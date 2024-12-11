@@ -1,4 +1,4 @@
-{% load static %}
+ {% load static %}
 <!DOCTYPE html>
 <html lang="bg">
 <head>
@@ -6,9 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Редактиране на задача</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+
     <style>
         body {
-            background: linear-gradient(to right, #e0f7fa, #b2ebf2);
+            background: url("/static/images/photo_cloud.jpeg") no-repeat center center fixed;
             height: 100vh;
             display: flex;
             justify-content: center;
@@ -85,84 +86,8 @@
         <!-- Формата за редактиране на задача -->
         <form method="POST">
             {% csrf_token %}
-            
-            <!-- Заглавие на задачата -->
-            <div class="form-group">
-                <label for="id_title">Заглавие на задачата</label>
-                {{ form.title }}
-                {% if form.title.errors %}
-                    <div class="error-messages">
-                        <ul>
-                            {% for error in form.title.errors %}
-                                <li>{{ error }}</li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                {% endif %}
-            </div>
-
-            <!-- Описание на задачата -->
-            <div class="form-group">
-                <label for="id_description">Описание на задачата</label>
-                {{ form.description }}
-                {% if form.description.errors %}
-                    <div class="error-messages">
-                        <ul>
-                            {% for error in form.description.errors %}
-                                <li>{{ error }}</li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                {% endif %}
-            </div>
-
-            <!-- Тип на задачата -->
-            <div class="form-group">
-                <label for="id_task_type">Тип на задачата</label>
-                {{ form.task_type }}
-                {% if form.task_type.errors %}
-                    <div class="error-messages">
-                        <ul>
-                            {% for error in form.task_type.errors %}
-                                <li>{{ error }}</li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                {% endif %}
-            </div>
-
-            <!-- Време за изпълнение -->
-            <div class="form-group">
-                <label for="id_estimated_time">Време за изпълнение</label>
-                {{ form.estimated_time }}
-                {% if form.estimated_time.errors %}
-                    <div class="error-messages">
-                        <ul>
-                            {% for error in form.estimated_time.errors %}
-                                <li>{{ error }}</li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                {% endif %}
-            </div>
-
-            <!-- Назначаване на потребител (показва се само за супер криейтори) -->
-            {% if user.role == 'super_creator' %}
-                <div class="form-group">
-                    <label for="id_assigned_to">Назначи на</label>
-                    {{ form.assigned_to }}
-                    {% if form.assigned_to.errors %}
-                        <div class="error-messages">
-                            <ul>
-                                {% for error in form.assigned_to.errors %}
-                                    <li>{{ error }}</li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    {% endif %}
-                </div>
-            {% endif %}
-
+            {{ form.as_p }}
+         
             <!-- Бутон за редактиране на задачата -->
             <button type="submit" class="btn btn-primary">Запази промените</button>
         </form>

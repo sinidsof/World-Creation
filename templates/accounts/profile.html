@@ -3,8 +3,18 @@
 {% block content %}
     <div class="profile-container">
         <h2>Профил на {{ user.username }}</h2>
+          {% if user.profile.profile_picture %}
+            <p><strong>Профилна снимка:</strong></p>
+            <img src="{{ user.profile.profile_picture }}" alt="Profile Picture" style="max-width: 200px;">
+        {% else %}
+            <p><strong>Няма качена снимка</strong></p>
+        {% endif %}
         <p><strong>Пълно име:</strong> {{ user.get_full_name }}</p>
         <p><strong>Имейл:</strong> {{ user.email }}</p>
+        
+        
+         <!-- Показване на профилна снимка, ако съществува -->
+      
 
         <!-- Може да добавите още информация, ако има -->
         <a href="{% url 'edit_profile' %}" class="btn btn-info">Редактирай профила</a>
